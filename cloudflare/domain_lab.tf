@@ -29,6 +29,16 @@ resource "cloudflare_dns_record" "headscale_domain_lab" {
   settings = {}
 }
 
+resource "cloudflare_dns_record" "netbird_domain_lab" {
+  content  = var.domain_lab
+  name     = "netbird.${var.domain_lab}"
+  proxied  = false
+  ttl      = 1
+  type     = "CNAME"
+  zone_id  = var.zone_id_domain_lab
+  settings = {}
+}
+
 resource "cloudflare_dns_record" "netbird_rp_domain_lab" {
   content  = var.domain_lab
   name     = "*.netbird.${var.domain_lab}"
