@@ -42,11 +42,11 @@ variable "oci-bom-arm-ip" {
   sensitive   = true
 }
 
-# variable "oci-bom-amd-1-ip" {
-#   description = "IP Address for specific servers"
-#   type        = string
-#   sensitive   = true
-# }
+variable "oci-bom-amd-1-ip" {
+  description = "IP Address for specific servers"
+  type        = string
+  sensitive   = true
+}
 
 variable "oci-zrh-arm-ip" {
   description = "IP Address for specific servers"
