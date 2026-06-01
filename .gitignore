@@ -2,9 +2,9 @@
 .DS_Store
 
 # temp
-local-dns
 oci/CI_SETUP.md
 keycloak
+.env
 
 # Environment variable scripts (contain secrets)
 **/env.sh
