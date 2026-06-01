@@ -13,7 +13,8 @@ locals {
     "links",
     "staging",
     "talwinder",
-    "www"
+    "www",
+    "archive-docs"
   ]
 }
 
