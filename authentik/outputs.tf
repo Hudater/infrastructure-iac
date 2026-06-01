@@ -9,10 +9,10 @@ output "apps" {
       client_id    = authentik_provider_oauth2.memos.client_id
       redirect_uri = "https://memos.${local.domain}/auth/callback"
     }
-    oauth2_proxy = {
-      client_id    = authentik_provider_oauth2.oauth2_proxy.client_id
-      redirect_uri = "https://auth.${local.domain}/oauth2/callback"
-    }
+    # oauth2_proxy = {
+    #   client_id    = authentik_provider_oauth2.oauth2_proxy.client_id
+    #   redirect_uri = "https://auth.${local.domain}/oauth2/callback"
+    # }
     pbs = {
       client_id    = authentik_provider_oauth2.pbs.client_id
       redirect_uri = "https://pbs.${local.domain}"
