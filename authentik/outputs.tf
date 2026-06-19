@@ -9,28 +9,16 @@ output "apps" {
       client_id    = authentik_provider_oauth2.memos.client_id
       redirect_uri = "https://memos.${local.domain}/auth/callback"
     }
-    # oauth2_proxy = {
-    #   client_id    = authentik_provider_oauth2.oauth2_proxy.client_id
-    #   redirect_uri = "https://auth.${local.domain}/oauth2/callback"
-    # }
-    pbs = {
-      client_id    = authentik_provider_oauth2.pbs.client_id
-      redirect_uri = "https://pbs.${local.domain}"
-    }
     portainer = {
       client_id    = authentik_provider_oauth2.portainer_bom_arm.client_id
-      redirect_uri = "https://portainer.${local.domain}/.*"
-    }
-    pve_pc = {
-      client_id    = authentik_provider_oauth2.pve_pc.client_id
-      redirect_uri = "https://pve-pc.${local.domain}"
+      redirect_uri = "https://portainer.${local.domain}/"
     }
     tugtainer = {
       client_id    = authentik_provider_oauth2.tugtainer.client_id
       redirect_uri = "https://tugtainer.${local.domain}/api/auth/oidc/callback"
     }
     netbird = {
-      client_id     = authentik_provider_oauth2.netbird.client_id
+      client_id = authentik_provider_oauth2.netbird.client_id
       redirect_uris = [
         "https://netbird.${local.domain}/nb-auth",
         "https://netbird.${local.domain}/nb-silent-auth",
@@ -52,7 +40,7 @@ output "google_source_callback" {
 output "groups" {
   description = "Groups configured for role-based access"
   value = {
-    admin  = authentik_group.users_admin.name
+    admin    = authentik_group.users_admin.name
     jellyfin = authentik_group.users_jellyfin.name
     immich   = authentik_group.users_immich.name
     ai       = authentik_group.users_ai.name

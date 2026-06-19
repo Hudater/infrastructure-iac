@@ -35,22 +35,7 @@ variable "memos_secret" {
   sensitive = true
 }
 
-variable "oauth2_proxy_secret" {
-  type      = string
-  sensitive = true
-}
-
-variable "pbs_secret" {
-  type      = string
-  sensitive = true
-}
-
 variable "portainer_bom_arm_secret" {
-  type      = string
-  sensitive = true
-}
-
-variable "pve_pc_secret" {
   type      = string
   sensitive = true
 }

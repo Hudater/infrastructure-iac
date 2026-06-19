@@ -153,9 +153,9 @@ resource "oci_core_instance" "arm_instance" {
   state               = "RUNNING"
 
   shape_config {
-    ocpus         = 4
-    memory_in_gbs = 24
-    vcpus         = 4
+    ocpus         = 2
+    memory_in_gbs = 12
+    vcpus         = 2
   }
 
   create_vnic_details {

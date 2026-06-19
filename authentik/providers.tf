@@ -11,6 +11,9 @@ data "authentik_property_mapping_provider_scope" "email" {
 data "authentik_property_mapping_provider_scope" "profile" {
   managed = "goauthentik.io/providers/oauth2/scope-profile"
 }
+data "authentik_property_mapping_provider_scope" "entitlements" {
+  managed = "goauthentik.io/providers/oauth2/scope-entitlements"
+}
 
 locals {
   domain = var.reverse_proxy_domain
@@ -26,6 +29,9 @@ resource "authentik_provider_oauth2" "grafana" {
   invalidation_flow  = data.authentik_flow.default_invalidation.id
   signing_key        = data.authentik_certificate_key_pair.default.id
 
+  logout_uri    = "https://grafana.${local.domain}/logout"
+  logout_method = "frontchannel"
+
   allowed_redirect_uris = [
     {
       matching_mode = "strict"
@@ -37,7 +43,8 @@ resource "authentik_provider_oauth2" "grafana" {
     data.authentik_property_mapping_provider_scope.openid.id,
     data.authentik_property_mapping_provider_scope.email.id,
     data.authentik_property_mapping_provider_scope.profile.id,
-    authentik_property_mapping_provider_scope.groups.id
+    data.authentik_property_mapping_provider_scope.entitlements.id,
+    authentik_property_mapping_provider_scope.groups.id,
   ]
 }
 
@@ -45,6 +52,11 @@ resource "authentik_application" "grafana" {
   name              = "Grafana"
   slug              = "grafana"
   protocol_provider = authentik_provider_oauth2.grafana.id
+}
+
+resource "authentik_application_entitlement" "grafana_admins" {
+  name        = "Grafana Admins"
+  application = authentik_application.grafana.uuid
 }
 
 ## Memos
@@ -78,68 +90,6 @@ resource "authentik_application" "memos" {
   protocol_provider = authentik_provider_oauth2.memos.id
 }
 
-# ## Oauth2-proxy
-# resource "authentik_provider_oauth2" "oauth2_proxy" {
-#   name          = "oauth2-proxy"
-#   client_id     = "oauth2-proxy"
-#   client_secret = var.oauth2_proxy_secret
-
-#   authorization_flow = data.authentik_flow.default_authorization.id
-#   invalidation_flow  = data.authentik_flow.default_invalidation.id
-#   signing_key        = data.authentik_certificate_key_pair.default.id
-
-#   allowed_redirect_uris = [
-#     {
-#       matching_mode = "strict"
-#       url           = "https://auth.${local.domain}/oauth2/callback"
-#     }
-#   ]
-
-#   property_mappings = [
-#     data.authentik_property_mapping_provider_scope.openid.id,
-#     data.authentik_property_mapping_provider_scope.email.id,
-#     data.authentik_property_mapping_provider_scope.profile.id,
-#     authentik_property_mapping_provider_scope.groups.id,
-#   ]
-# }
-
-# resource "authentik_application" "oauth2_proxy" {
-#   name              = "OAuth2 Proxy"
-#   slug              = "oauth2-proxy"
-#   protocol_provider = authentik_provider_oauth2.oauth2_proxy.id
-# }
-
-## Proxmox Backup Server
-resource "authentik_provider_oauth2" "pbs" {
-  name          = "pbs"
-  client_id     = "pbs"
-  client_secret = var.pbs_secret
-
-  authorization_flow = data.authentik_flow.default_authorization.id
-  invalidation_flow  = data.authentik_flow.default_invalidation.id
-  signing_key        = data.authentik_certificate_key_pair.default.id
-
-  allowed_redirect_uris = [
-    {
-      matching_mode = "strict"
-      url           = "https://pbs.${local.domain}"
-    }
-  ]
-
-  property_mappings = [
-    data.authentik_property_mapping_provider_scope.openid.id,
-    data.authentik_property_mapping_provider_scope.email.id,
-    data.authentik_property_mapping_provider_scope.profile.id,
-    authentik_property_mapping_provider_scope.groups.id,
-  ]
-}
-
-resource "authentik_application" "pbs" {
-  name              = "Proxmox Backup Server"
-  slug              = "pbs"
-  protocol_provider = authentik_provider_oauth2.pbs.id
-}
-
 ## Portainer
 resource "authentik_provider_oauth2" "portainer_bom_arm" {
   name          = "portainer-bom-arm"
@@ -150,10 +100,12 @@ resource "authentik_provider_oauth2" "portainer_bom_arm" {
   invalidation_flow  = data.authentik_flow.default_invalidation.id
   signing_key        = data.authentik_certificate_key_pair.default.id
 
+  logout_uri = "https://portainer.${local.domain}/"
+
   allowed_redirect_uris = [
     {
-      matching_mode = "regex"
-      url           = "https://portainer.${local.domain}/.*"
+      matching_mode = "strict"
+      url           = "https://portainer.${local.domain}/"
     }
   ]
 
@@ -161,6 +113,7 @@ resource "authentik_provider_oauth2" "portainer_bom_arm" {
     data.authentik_property_mapping_provider_scope.openid.id,
     data.authentik_property_mapping_provider_scope.email.id,
     data.authentik_property_mapping_provider_scope.profile.id,
+    data.authentik_property_mapping_provider_scope.entitlements.id,
     authentik_property_mapping_provider_scope.groups.id,
   ]
 }
@@ -169,38 +122,6 @@ resource "authentik_application" "portainer_bom_arm" {
   name              = "Portainer"
   slug              = "portainer-bom-arm"
   protocol_provider = authentik_provider_oauth2.portainer_bom_arm.id
-}
-
-## Proxmox whatever VE stands for
-# the pc one, "prod"
-resource "authentik_provider_oauth2" "pve_pc" {
-  name          = "pve-pc"
-  client_id     = "pve-pc"
-  client_secret = var.pve_pc_secret
-
-  authorization_flow = data.authentik_flow.default_authorization.id
-  invalidation_flow  = data.authentik_flow.default_invalidation.id
-  signing_key        = data.authentik_certificate_key_pair.default.id
-
-  allowed_redirect_uris = [
-    {
-      matching_mode = "strict"
-      url           = "https://pve-pc.${local.domain}"
-    }
-  ]
-
-  property_mappings = [
-    data.authentik_property_mapping_provider_scope.openid.id,
-    data.authentik_property_mapping_provider_scope.email.id,
-    data.authentik_property_mapping_provider_scope.profile.id,
-    authentik_property_mapping_provider_scope.groups.id,
-  ]
-}
-
-resource "authentik_application" "pve_pc" {
-  name              = "Proxmox VE"
-  slug              = "pve-pc"
-  protocol_provider = authentik_provider_oauth2.pve_pc.id
 }
 
 ## Tugtainer
@@ -240,12 +161,12 @@ resource "authentik_provider_oauth2" "netbird" {
   client_id     = "netbird"
   client_secret = var.netbird_secret
 
-  authorization_flow = data.authentik_flow.default_authorization.id
-  invalidation_flow  = data.authentik_flow.default_invalidation.id
-  signing_key        = data.authentik_certificate_key_pair.default.id
+  authorization_flow     = data.authentik_flow.default_authorization.id
+  invalidation_flow      = data.authentik_flow.default_invalidation.id
+  signing_key            = data.authentik_certificate_key_pair.default.id
   access_token_validity  = "hours=24"
   refresh_token_validity = "days=180"
-  logout_uri = "https://netbird.${local.domain}/"
+  logout_uri             = "https://netbird.${local.domain}/"
 
   allowed_redirect_uris = [
     {

@@ -39,21 +39,19 @@ resource "authentik_policy_binding" "grafana_admin" {
   policy = authentik_policy_expression.require_admin.id
   order  = 0
 }
-resource "authentik_policy_binding" "pbs_admin" {
-  target = authentik_application.pbs.uuid
-  policy = authentik_policy_expression.require_admin.id
+
+resource "authentik_policy_binding" "grafana_entitlement_admin" {
+  target = authentik_application_entitlement.grafana_admins.id
+  group  = authentik_group.users_admin.id
   order  = 0
 }
+
 resource "authentik_policy_binding" "portainer_admin" {
   target = authentik_application.portainer_bom_arm.uuid
   policy = authentik_policy_expression.require_admin.id
   order  = 0
 }
-resource "authentik_policy_binding" "pve_admin" {
-  target = authentik_application.pve_pc.uuid
-  policy = authentik_policy_expression.require_admin.id
-  order  = 0
-}
+
 resource "authentik_policy_binding" "tugtainer_admin" {
   target = authentik_application.tugtainer.uuid
   policy = authentik_policy_expression.require_admin.id
