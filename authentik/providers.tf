@@ -235,7 +235,7 @@ resource "authentik_provider_oauth2" "arcane_bom_arm" {
   allowed_redirect_uris = [
     {
       matching_mode = "strict"
-      url           = "https://arcane.${local.domain}/"
+      url           = "https://arcane.${local.domain}/auth/oidc/callback"
     }
   ]
 
