@@ -263,6 +263,22 @@ resource "oci_core_network_security_group_security_rule" "arm_https" {
   }
 }
 
+resource "oci_core_network_security_group_security_rule" "arm_netbird" {
+  network_security_group_id = oci_core_network_security_group.arm_nsg.id
+  direction                 = "INGRESS"
+  protocol                  = "17"
+  source                    = "0.0.0.0/0"
+  source_type               = "CIDR_BLOCK"
+  description               = "For Netbird"
+
+  udp_options {
+    destination_port_range {
+      min = 51820
+      max = 51820
+    }
+  }
+}
+
 resource "oci_core_network_security_group_security_rule" "arm_wireguard" {
   network_security_group_id = oci_core_network_security_group.arm_nsg.id
   direction                 = "INGRESS"
@@ -273,8 +289,8 @@ resource "oci_core_network_security_group_security_rule" "arm_wireguard" {
 
   udp_options {
     destination_port_range {
-      min = 51820
-      max = 51820
+      min = 51822
+      max = 51822
     }
   }
 }
