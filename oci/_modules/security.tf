@@ -269,7 +269,7 @@ resource "oci_core_network_security_group_security_rule" "arm_netbird" {
   protocol                  = "17"
   source                    = "0.0.0.0/0"
   source_type               = "CIDR_BLOCK"
-  description               = "For Netbird"
+  description               = "For Netbird, please work"
 
   udp_options {
     destination_port_range {
