@@ -269,7 +269,7 @@ resource "oci_core_network_security_group_security_rule" "arm_netbird" {
   protocol                  = "17"
   source                    = "0.0.0.0/0"
   source_type               = "CIDR_BLOCK"
-  description               = "For Netbird, please work"
+  description               = "For Netbird"
 
   udp_options {
     destination_port_range {
@@ -285,7 +285,7 @@ resource "oci_core_network_security_group_security_rule" "arm_wireguard" {
   protocol                  = "17"
   source                    = "0.0.0.0/0"
   source_type               = "CIDR_BLOCK"
-  description               = "For Wireguard, apply please"
+  description               = "For Wireguard"
 
   udp_options {
     destination_port_range {
