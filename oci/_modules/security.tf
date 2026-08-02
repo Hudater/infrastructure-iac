@@ -279,21 +279,21 @@ resource "oci_core_network_security_group_security_rule" "arm_https" {
 #   }
 # }
 
-resource "oci_core_network_security_group_security_rule" "arm_wireguard" {
-  network_security_group_id = oci_core_network_security_group.arm_nsg.id
-  direction                 = "INGRESS"
-  protocol                  = "17"
-  source                    = "0.0.0.0/0"
-  source_type               = "CIDR_BLOCK"
-  description               = "For Wireguard, apply please"
+# resource "oci_core_network_security_group_security_rule" "arm_wireguard" {
+#   network_security_group_id = oci_core_network_security_group.arm_nsg.id
+#   direction                 = "INGRESS"
+#   protocol                  = "17"
+#   source                    = "0.0.0.0/0"
+#   source_type               = "CIDR_BLOCK"
+#   description               = "For Wireguard, apply please"
 
-  udp_options {
-    destination_port_range {
-      min = 51822
-      max = 51822
-    }
-  }
-}
+#   udp_options {
+#     destination_port_range {
+#       min = 51822
+#       max = 51822
+#     }
+#   }
+# }
 
 resource "oci_core_network_security_group_security_rule" "arm_headscale" {
   network_security_group_id = oci_core_network_security_group.arm_nsg.id
