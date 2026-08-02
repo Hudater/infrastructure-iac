@@ -1,6 +1,7 @@
 # macOS system files
 .DS_Store
 
+**/.commandcode
 # temp
 oci/CI_SETUP.md
 keycloak
