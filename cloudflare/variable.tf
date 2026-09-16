@@ -35,6 +35,12 @@ variable "zone_id_domain_lab" {
   sensitive   = true
 }
 
+variable "zone_id_h5t_dev" {
+  description = "Zone ID for h5t.dev on cloudflare"
+  type        = string
+  sensitive   = true
+}
+
 ## IP Addresses
 variable "oci-bom-arm-ip" {
   description = "IP Address for specific servers"
