@@ -8,21 +8,21 @@ resource "cloudflare_ruleset" "h5t_dev_redirect_to_links" {
   phase       = "http_request_dynamic_redirect"
   description = "Redirect h5t.dev and *.h5t.dev to links.hudater.dev"
 
-  rules {
+  rules = [{
     description = "Redirect all requests to links.hudater.dev"
     expression  = "true"
     action      = "redirect"
     enabled     = true
 
-    action_parameters {
-      from_value {
+    action_parameters = {
+      from_value = {
         status_code           = 301
         preserve_query_string = true
 
-        target_url {
+        target_url = {
           value = "https://links.hudater.dev"
         }
       }
     }
-  }
+  }]
 }
