@@ -39,6 +39,7 @@ resource "cloudflare_dns_record" "hudater_dev_subdomains" {
   proxied  = false
   zone_id  = var.zone_id_hudater_dev
 }
+
 # Public status page
 resource "cloudflare_dns_record" "satus_hudater_dev" {
   comment  = "Status page for whole infrastructure"
@@ -49,6 +50,30 @@ resource "cloudflare_dns_record" "satus_hudater_dev" {
   type     = "CNAME"
   zone_id  = var.zone_id_hudater_dev
   settings = {}
+}
+
+resource "cloudflare_ruleset" "links_hudater_catchall" {
+  zone_id     = var.zone_id_hudater_dev
+  name        = "links.hudater.dev catch-all"
+  kind        = "zone"
+  phase       = "http_request_dynamic_redirect"
+
+  rules = [{
+    description = "Non-root paths to links root"
+    expression  = "http.host eq \"links.hudater.dev\" and http.request.uri.path ne \"/\""
+    action      = "redirect"
+    enabled     = true
+
+    action_parameters = {
+      from_value = {
+        status_code           = 302
+        preserve_query_string = false
+        target_url = {
+          value = "https://links.hudater.dev/"
+        }
+      }
+    }
+  }]
 }
 
 # NOTE: handled in resume-pipeline repo now
