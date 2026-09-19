@@ -1,5 +1,28 @@
 # Redirect all traffic for h5t.dev and *.h5t.dev to links.hudater.dev
 # A single zone-level dynamic redirect rule covers both the apex and any subdomain
+locals {
+  dummy_ip_for_redirect = [
+    "192.0.2.1"
+  ]
+}
+
+resource "cloudflare_dns_record" "h5t_dev_apex" {
+  zone_id = var.zone_id_h5t_dev
+  name    = "h5t.dev"
+  type    = "A"
+  content = local.dummy_ip_for_redirect[0]
+  proxied = true
+  ttl     = 1
+}
+
+resource "cloudflare_dns_record" "h5t_dev_wildcard" {
+  zone_id = var.zone_id_h5t_dev
+  name    = "*"
+  type    = "A"
+  content = local.dummy_ip_for_redirect[0]
+  proxied = true
+  ttl     = 1
+}
 
 resource "cloudflare_ruleset" "h5t_dev_redirect_to_links" {
   zone_id     = var.zone_id_h5t_dev
