@@ -17,7 +17,9 @@ resource "netbird_policy" "admin_full_access" {
     destinations = [
       netbird_group.srv_onprem_noida.id,
       netbird_group.srv_oci_bom.id,
+      netbird_group.srv_oci_bom_arm.id,
       netbird_group.srv_oci_zrh.id,
+      netbird_group.srv_oci_zrh_arm.id,
     ]
   }
 }
@@ -37,12 +39,16 @@ resource "netbird_policy" "srv_full_mesh" {
     sources = [
       netbird_group.srv_onprem_noida.id,
       netbird_group.srv_oci_bom.id,
+      netbird_group.srv_oci_bom_arm.id,
       netbird_group.srv_oci_zrh.id,
+      netbird_group.srv_oci_zrh_arm.id,
     ]
     destinations = [
       netbird_group.srv_onprem_noida.id,
       netbird_group.srv_oci_bom.id,
+      netbird_group.srv_oci_bom_arm.id,
       netbird_group.srv_oci_zrh.id,
+      netbird_group.srv_oci_zrh_arm.id,
     ]
   }
 }
@@ -63,7 +69,9 @@ resource "netbird_policy" "admin_ssh" {
     destinations = [
       netbird_group.srv_onprem_noida.id,
       netbird_group.srv_oci_bom.id,
+      netbird_group.srv_oci_bom_arm.id,
       netbird_group.srv_oci_zrh.id,
+      netbird_group.srv_oci_zrh_arm.id,
     ]
   }
 }

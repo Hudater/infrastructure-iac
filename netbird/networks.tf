@@ -74,7 +74,7 @@ resource "netbird_network_resource" "oci_bom_lxd" {
   description = "bom-arm lxd subnet 10.70.0.0/24"
   address     = "10.70.0.0/24"
   enabled     = true
-  groups      = [netbird_group.srv_oci_bom.id]
+  groups      = [netbird_group.srv_oci_bom_arm.id]
 }
 
 resource "netbird_network_router" "oci_bom_lxd" {
@@ -120,7 +120,7 @@ resource "netbird_network_resource" "oci_zrh_lxd" {
   description = "zrh-arm lxd subnet 10.90.0.0/24"
   address     = "10.90.0.0/24"
   enabled     = true
-  groups      = [netbird_group.srv_oci_zrh.id]
+  groups      = [netbird_group.srv_oci_zrh_arm.id]
 }
 
 resource "netbird_network_router" "oci_zrh_lxd" {
