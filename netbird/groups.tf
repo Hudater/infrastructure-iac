@@ -13,10 +13,17 @@ resource "netbird_group" "srv_oci_bom" {
   name = "srv-oci-bom"
 }
 
+resource "netbird_group" "srv_oci_bom_arm" {
+  name = "srv-oci-bom-arm"
+}
+
 resource "netbird_group" "srv_oci_zrh" {
   name = "srv-oci-zrh"
 }
 
+resource "netbird_group" "srv_oci_zrh_arm" {
+  name = "srv-oci-zrh-arm"
+}
 # User Groups (auto-mapped from IdP JWT)
 # a caveat with these: groups need to be created by netbird i.e, must not exist beforehand
 # afai researched about it using chatbots, netbird tags groups with either api or netbird

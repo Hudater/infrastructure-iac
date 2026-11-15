@@ -39,40 +39,6 @@ resource "netbird_network_router" "onprem" {
   enabled     = true
 }
 
-## On-prem MdSrv
-resource "netbird_network" "onprem_mdsrv" {
-  name        = "onprem-mdsrv"
-  description = "On-premises MdSrv server"
-}
-
-# resource "netbird_network_resource" "onprem_mdsrv" {
-#   network_id = netbird_network.onprem_mdsrv.id
-#   name       = "onprem-mdsrv"
-#   address    = "10.2.0.11/32"
-#   groups = [
-#     data.netbird_group.users_jellyfin.id,
-#     data.netbird_group.users_immich.id,
-#     data.netbird_group.users_ai.id,
-#   ]
-# }
-
-# resource "netbird_network_router" "onprem-mdsrv" {
-#   network_id  = netbird_network.onprem_mdsrv.id
-#   peer_groups = [netbird_group.srv_onprem_noida.id]
-#   metric      = 100
-#   masquerade  = true
-#   enabled     = true
-# }
-
-
-resource "netbird_network_resource" "onprem_mdsrv" {
-  network_id = netbird_network.onprem_mdsrv.id
-  name       = "onprem-mdsrv"
-  address    = "10.2.0.11/32"
-  groups     = [netbird_group.srv_onprem_mdsrv.id]
-}
-
-
 # OCI Mumbai Network
 resource "netbird_network" "oci_bom" {
   name        = "oci-bom"
@@ -88,18 +54,32 @@ resource "netbird_network_resource" "oci_bom_subnet1" {
   groups      = [netbird_group.srv_oci_bom.id]
 }
 
-resource "netbird_network_resource" "oci_bom_subnet2" {
+resource "netbird_network_router" "oci_bom" {
   network_id  = netbird_network.oci_bom.id
+  peer_groups = [netbird_group.srv_oci_bom.id]
+  metric      = 100
+  masquerade  = true
+  enabled     = true
+}
+
+# OCI Mumbai lxd bridge (10.70.0.0/24 exists only on bom-arm, so only bom-arm may route it)
+resource "netbird_network" "oci_bom_lxd" {
+  name        = "oci-bom-lxd"
+  description = "lxd bridge on bom-arm"
+}
+
+resource "netbird_network_resource" "oci_bom_lxd" {
+  network_id  = netbird_network.oci_bom_lxd.id
   name        = "oci-bom-subnet-70"
-  description = "OCI Mumbai subnet 10.70.0.0/24"
+  description = "bom-arm lxd subnet 10.70.0.0/24"
   address     = "10.70.0.0/24"
   enabled     = true
   groups      = [netbird_group.srv_oci_bom.id]
 }
 
-resource "netbird_network_router" "oci_bom" {
-  network_id  = netbird_network.oci_bom.id
-  peer_groups = [netbird_group.srv_oci_bom.id]
+resource "netbird_network_router" "oci_bom_lxd" {
+  network_id  = netbird_network.oci_bom_lxd.id
+  peer_groups = [netbird_group.srv_oci_bom_arm.id]
   metric      = 100
   masquerade  = true
   enabled     = true
@@ -120,18 +100,32 @@ resource "netbird_network_resource" "oci_zrh_subnet1" {
   groups      = [netbird_group.srv_oci_zrh.id]
 }
 
-resource "netbird_network_resource" "oci_zrh_subnet2" {
+resource "netbird_network_router" "oci_zrh" {
   network_id  = netbird_network.oci_zrh.id
+  peer_groups = [netbird_group.srv_oci_zrh.id]
+  metric      = 100
+  masquerade  = true
+  enabled     = true
+}
+
+# OCI Zurich lxd bridge (10.90.0.0/24 exists only on zrh-arm, so only zrh-arm may route it)
+resource "netbird_network" "oci_zrh_lxd" {
+  name        = "oci-zrh-lxd"
+  description = "lxd bridge on zrh-arm"
+}
+
+resource "netbird_network_resource" "oci_zrh_lxd" {
+  network_id  = netbird_network.oci_zrh_lxd.id
   name        = "oci-zrh-subnet-90"
-  description = "OCI Zurich subnet 10.90.0.0/24"
+  description = "zrh-arm lxd subnet 10.90.0.0/24"
   address     = "10.90.0.0/24"
   enabled     = true
   groups      = [netbird_group.srv_oci_zrh.id]
 }
 
-resource "netbird_network_router" "oci_zrh" {
-  network_id  = netbird_network.oci_zrh.id
-  peer_groups = [netbird_group.srv_oci_zrh.id]
+resource "netbird_network_router" "oci_zrh_lxd" {
+  network_id  = netbird_network.oci_zrh_lxd.id
+  peer_groups = [netbird_group.srv_oci_zrh_arm.id]
   metric      = 100
   masquerade  = true
   enabled     = true

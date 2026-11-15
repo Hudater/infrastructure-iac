@@ -93,58 +93,6 @@ resource "netbird_policy" "admin_ssh" {
 #   }
 # }
 
-# Jellyfin Users
-# # Only access to jellyfin service on on-prem
-# resource "netbird_policy" "jellyfin_access" {
-#   name        = "jellyfin-user-access"
-#   description = "Jellyfin users can only access Jellyfin service"
-#   enabled     = true
-
-#   rule {
-#     name          = "jellyfin-tcp"
-#     action        = "accept"
-#     bidirectional = false
-#     enabled       = true
-#     protocol      = "tcp"
-#     sources       = [data.netbird_group.users_jellyfin.id]
-#     destinations  = [netbird_group.srv_onprem_noida.id]
-#     ports = ["8096", "8920"]
-#   }
-# }
-
-# # Immich Users
-# resource "netbird_policy" "immich_access" {
-#   name        = "immich-user-access"
-#   description = "Immich users can only access Immich service"
-#   enabled     = true
-
-#   rule {
-#     name          = "immich-tcp"
-#     action        = "accept"
-#     bidirectional = false
-#     enabled       = true
-#     protocol      = "tcp"
-#     sources       = [data.netbird_group.users_immich.id]
-#     destinations  = [netbird_group.srv_onprem_noida.id]
-#     ports = ["2283"]
-#   }
-# }
-
-# resource "netbird_policy" "ai_access" {
-#   name    = "ai-user-access"
-#   enabled = true
-#   rule {
-#     name          = "ai-tcp"
-#     action        = "accept"
-#     bidirectional = false
-#     enabled       = true
-#     protocol      = "tcp"
-#     sources       = [data.netbird_group.users_ai.id]
-#     destinations  = [netbird_group.srv_onprem_noida.id]
-#     ports         = ["3033"]
-#   }
-# }
-
 resource "netbird_policy" "jellyfin_access" {
   name    = "jellyfin-access"
   enabled = true

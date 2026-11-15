@@ -24,6 +24,19 @@ resource "netbird_setup_key" "oci_bom" {
   ]
 }
 
+# OCI bom-arm setup key
+resource "netbird_setup_key" "oci_bom_arm" {
+  name                   = "srv-oci-bom-arm-key"
+  type                   = "reusable"
+  expiry_seconds         = 0
+  usage_limit            = 0
+  ephemeral              = false
+  allow_extra_dns_labels = true
+  auto_groups = [
+    netbird_group.srv_oci_bom_arm.id,
+  ]
+}
+
 # OCI Zurich setup key
 resource "netbird_setup_key" "oci_zrh" {
   name                   = "srv-oci-zrh-key"
@@ -34,5 +47,18 @@ resource "netbird_setup_key" "oci_zrh" {
   allow_extra_dns_labels = true
   auto_groups = [
     netbird_group.srv_oci_zrh.id,
+  ]
+}
+
+# OCI zrh-arm setup key
+resource "netbird_setup_key" "oci_zrh_arm" {
+  name                   = "srv-oci-zrh-arm-key"
+  type                   = "reusable"
+  expiry_seconds         = 0
+  usage_limit            = 0
+  ephemeral              = false
+  allow_extra_dns_labels = true
+  auto_groups = [
+    netbird_group.srv_oci_zrh_arm.id,
   ]
 }
