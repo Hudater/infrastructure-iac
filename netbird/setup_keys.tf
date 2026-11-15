@@ -33,6 +33,7 @@ resource "netbird_setup_key" "oci_bom_arm" {
   ephemeral              = false
   allow_extra_dns_labels = true
   auto_groups = [
+    netbird_group.srv_oci_bom.id,
     netbird_group.srv_oci_bom_arm.id,
   ]
 }
@@ -59,6 +60,7 @@ resource "netbird_setup_key" "oci_zrh_arm" {
   ephemeral              = false
   allow_extra_dns_labels = true
   auto_groups = [
+    netbird_group.srv_oci_zrh.id,
     netbird_group.srv_oci_zrh_arm.id,
   ]
 }
