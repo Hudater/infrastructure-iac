@@ -1,0 +1,29 @@
+technitium:
+  # Technitium DNS endpoints. All configured and reachable nodes will be synced.
+  urls:
+    - "http://10.2.0.7:5380"
+    - "http://10.70.0.103:5380"
+  # Name of environment variable containing the API token (or loaded from .env)
+  token_env: "TECHNITIUM_TOKEN"
+
+# List-of-lists sources (URLs that return a newline-separated list of blocklist URLs)
+list_of_lists:
+  - name: "Firebog Ticked"
+    url: "https://v.firebog.net/hosts/lists.php?type=tick"
+    enabled: true
+  - name: "Firebog Adult"
+    url: "https://v.firebog.net/hosts/lists.php?type=adult"
+    enabled: true
+
+# Direct blocklist URLs to include in addition to list-of-lists
+direct_blocklists: []
+
+# Whitelist / Allowlist configuration
+whitelist:
+  # Remote URLs containing domains or Adblock-style rules
+  urls:
+    - "https://raw.githubusercontent.com/Hudater/publicCfg/refs/heads/main/adblocker/allowlist.txt"
+  # Local filesystem fallback if remote URLs cannot be reached
+  local_fallback: "/mnt/files/SyncFiles/publicCfg/adblocker/allowlist.txt"
+  # Additional static domains to whitelist
+  manual_domains: []
